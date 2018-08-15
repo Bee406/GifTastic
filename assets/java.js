@@ -1,8 +1,7 @@
 //get initial buttons on the page
 
 //array of start buttons
-var topics = ["Friday", "Alcohol", "Dance", "Programming", "Lazy", "Eating"];
-console.log(topics);
+var topics = ["Cartoons", "Brunch", "Coffee", "Monday", "Lazy", "Coding", "Homework", "Football", "Family Dinner"];
 
 function renderButtons() {
 
@@ -14,7 +13,7 @@ function renderButtons() {
 
         var a = $("<button>");
        
-        a.addClass("friday-gif");
+        a.addClass("sunday-gif");
 
         a.attr("data-topic", topics[i]);
 
@@ -24,7 +23,7 @@ function renderButtons() {
     }
 }
 
-$("#add-button").on("click", function (event) {
+$("#add-button").on("click", "sunday-gif", function (event) {
 
     //prevent page from reloading when submit button is clicked
     event.preventDefault();
@@ -38,20 +37,23 @@ $("#add-button").on("click", function (event) {
     //call render function to clear div and put all buttons on the page, including user's input
     renderButtons();
 
+    $("#search-input").val("");
+
 });
 
 //calling renderButtons here so that they exist for click function
 renderButtons(); 
 
+
 //get gifs
 
-$("button").on("click", function () {
+$(document).on("click", "button", function () {
 
-    //$("gif-div").empty();
+    $("#gif-div").empty();
 
     var topic = $(this).attr("data-topic");
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=bzsLQXHKeqCsizLEPeAz9MyTrTTC1Z5R";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&limit=10&api_key=bzsLQXHKeqCsizLEPeAz9MyTrTTC1Z5R";
 
     $.ajax({
         url: queryURL,
@@ -59,14 +61,20 @@ $("button").on("click", function () {
     }).then(function(response){
         console.log(response);
         var results = response.data;
+        
+        
         for (var i=0; i<results.length; i++){
+            var newDiv = $("<div>");
+            newDiv.addClass("gif-child")
             var image = $("<img>");
             image.addClass("gif");
             image.attr("src", results[i].images.fixed_height_still.url);
             image.attr("data-still", results[i].images.fixed_height_still.url);
             image.attr("data-animate", results[i].images.fixed_height.url);
             image.attr("data-state", "still");
-            $("#gif-div").prepend(image);
+            var gifRating = response.data[i].rating;
+            $(newDiv).prepend("Rating: " + gifRating + "<br>", image);
+            $("#gif-div").prepend(newDiv);
         }
     });
 });

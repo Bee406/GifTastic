@@ -1,0 +1,21 @@
+.container {
+    margin: auto;
+    margin-top: 2rem;
+}
+
+button {
+    margin: .5rem;
+}
+
+.gif-child {
+    float: left;
+    margin-right: .25rem;
+}
+
+.more-button {
+    margin-left:0;
+    margin-top: 2rem;
+    position: fixed;
+    bottom: 1rem;
+
+}
